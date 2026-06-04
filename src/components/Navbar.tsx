@@ -1,11 +1,24 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 import { useCartStore } from '../store/cartStore'
+import { useBackendStatus } from '../hooks/useBackendStatus'
+
+const STATUS_DOT: Record<string, string> = {
+  checking: 'bg-yellow-400 opacity-70',
+  online:   'bg-emerald-400',
+  offline:  'bg-red-500',
+}
+const STATUS_LABEL: Record<string, string> = {
+  checking: 'Conectando...',
+  online:   'Backend online',
+  offline:  'Backend sin conexión',
+}
 
 export function Navbar() {
   const { user, logout } = useAuthStore()
   const itemCount = useCartStore((s) => s.itemCount)
   const navigate = useNavigate()
+  const backendStatus = useBackendStatus()
 
   const handleLogout = async () => {
     await logout()
@@ -25,6 +38,13 @@ export function Navbar() {
           <Link to="/" className="text-sm text-white/60 hover:text-white transition-colors">
             Productos
           </Link>
+
+          <div className="flex items-center gap-1.5 group cursor-default" title={STATUS_LABEL[backendStatus]}>
+            <span className={`w-2 h-2 rounded-full flex-shrink-0 ${STATUS_DOT[backendStatus]} ${backendStatus === 'checking' ? 'animate-pulse' : ''}`} />
+            <span className="text-xs text-white/25 group-hover:text-white/50 transition-colors">
+              {STATUS_LABEL[backendStatus]}
+            </span>
+          </div>
 
           {user && (
             <>

@@ -1,8 +1,10 @@
 import axios, { AxiosError } from 'axios'
 import type { AuthTokens } from '../types'
 
+const API_URL = import.meta.env.VITE_API_URL
+
 export const api = axios.create({
-  baseURL: 'http://localhost:8080',
+  baseURL: API_URL,
 })
 
 const getAccessToken = () => localStorage.getItem('accessToken')
@@ -58,7 +60,7 @@ api.interceptors.response.use(
       isRefreshing = true
 
       try {
-        const { data } = await axios.post<AuthTokens>('http://localhost:8080/auth/refresh', {
+        const { data } = await axios.post<AuthTokens>(`${API_URL}/auth/refresh`, {
           refreshToken,
         })
         setTokens(data)
