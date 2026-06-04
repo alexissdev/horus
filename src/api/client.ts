@@ -39,7 +39,9 @@ api.interceptors.response.use(
   async (error: AxiosError) => {
     const original = error.config as typeof error.config & { _retry?: boolean }
 
-    if (error.response?.status === 401 && !original?._retry) {
+    const isAuthEndpoint = original?.url?.startsWith('/auth/')
+
+    if (error.response?.status === 401 && !original?._retry && !isAuthEndpoint) {
       const refreshToken = getRefreshToken()
       if (!refreshToken) {
         clearTokens()
