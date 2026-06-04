@@ -39,64 +39,82 @@ export function CatalogPage() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">Productos</h1>
+    <div className="max-w-6xl mx-auto px-5 py-10">
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold text-white">Productos</h1>
+        <p className="text-white/40 text-sm mt-1">Explorá nuestro catálogo</p>
+      </div>
 
-      <div className="flex flex-col sm:flex-row gap-3 mb-6">
+      <div className="flex flex-col sm:flex-row gap-3 mb-8">
         <input
           type="text"
           placeholder="Buscar productos..."
           value={search}
           onChange={(e) => { setSearch(e.target.value); setPage(0) }}
-          className="flex-1 border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="glass-input flex-1"
         />
         <select
           value={categoryId ?? ''}
           onChange={(e) => { setCategoryId(e.target.value ? Number(e.target.value) : undefined); setPage(0) }}
-          className="border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="glass-input sm:w-52"
+          style={{ background: 'rgba(255,255,255,0.07)' }}
         >
-          <option value="">Todas las categorías</option>
+          <option value="" style={{ background: '#1a1a2e' }}>Todas las categorías</option>
           {categoriesData?.content.map((c) => (
-            <option key={c.id} value={c.id}>{c.name}</option>
+            <option key={c.id} value={c.id} style={{ background: '#1a1a2e' }}>{c.name}</option>
           ))}
         </select>
       </div>
 
-      {isLoading && <p className="text-gray-500 text-sm">Cargando...</p>}
-      {error && <p className="text-red-500 text-sm">{getErrorMessage(error)}</p>}
+      {isLoading && (
+        <div className="flex justify-center py-20">
+          <div className="w-8 h-8 rounded-full border-2 border-violet-500/30 border-t-violet-500 animate-spin" />
+        </div>
+      )}
+      {error && <p className="text-red-400 text-sm">{getErrorMessage(error)}</p>}
 
       {data && (
         <>
           {data.empty ? (
-            <p className="text-gray-500 text-sm">No se encontraron productos.</p>
+            <p className="text-white/40 text-sm">No se encontraron productos.</p>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {data.content.map((product) => (
-                <div key={product.id} className="bg-white border rounded-xl overflow-hidden hover:shadow-md transition-shadow">
-                  <Link to={`/products/${product.id}`}>
+                <div
+                  key={product.id}
+                  className="glass rounded-2xl overflow-hidden flex flex-col group transition-all hover:shadow-lg hover:shadow-violet-500/10"
+                  style={{ transition: 'transform 0.15s, box-shadow 0.15s' }}
+                  onMouseEnter={(e) => (e.currentTarget.style.transform = 'translateY(-2px)')}
+                  onMouseLeave={(e) => (e.currentTarget.style.transform = 'translateY(0)')}
+                >
+                  <Link to={`/products/${product.id}`} className="block">
                     {product.imageUrl ? (
                       <img src={product.imageUrl} alt={product.name} className="w-full h-40 object-cover" />
                     ) : (
-                      <div className="w-full h-40 bg-gray-100 flex items-center justify-center text-gray-400 text-sm">
+                      <div className="w-full h-40 flex items-center justify-center text-white/20 text-xs"
+                        style={{ background: 'rgba(255,255,255,0.03)' }}>
                         Sin imagen
                       </div>
                     )}
                   </Link>
-                  <div className="p-3">
+                  <div className="p-4 flex flex-col flex-1">
                     <Link to={`/products/${product.id}`}>
-                      <h3 className="font-medium text-gray-900 text-sm hover:text-indigo-600 line-clamp-2">
+                      <h3 className="font-medium text-white text-sm leading-snug hover:text-violet-300 transition-colors line-clamp-2">
                         {product.name}
                       </h3>
                     </Link>
                     {product.category && (
-                      <p className="text-xs text-gray-400 mt-1">{product.category.name}</p>
+                      <span className="mt-1.5 text-[10px] font-medium text-violet-400/70 uppercase tracking-wider">
+                        {product.category.name}
+                      </span>
                     )}
-                    <div className="flex items-center justify-between mt-3">
-                      <span className="font-bold text-indigo-600 text-sm">{formatPrice(product.price)}</span>
+                    <div className="flex items-center justify-between mt-auto pt-3">
+                      <span className="font-bold text-white text-sm">{formatPrice(product.price)}</span>
                       <button
                         onClick={() => handleAddToCart(product.id)}
                         disabled={addingId === product.id || product.stock === 0}
-                        className="text-xs bg-indigo-600 text-white px-3 py-1 rounded-lg hover:bg-indigo-700 disabled:opacity-50"
+                        className="text-xs px-3 py-1.5 rounded-xl font-medium text-white transition-all disabled:opacity-40"
+                        style={{ background: product.stock === 0 ? 'rgba(255,255,255,0.1)' : 'linear-gradient(135deg, #6c3bfa, #4f46e5)' }}
                       >
                         {product.stock === 0 ? 'Sin stock' : addingId === product.id ? '...' : '+ Carrito'}
                       </button>

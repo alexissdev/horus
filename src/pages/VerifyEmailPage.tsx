@@ -9,34 +9,40 @@ export function VerifyEmailPage() {
 
   useEffect(() => {
     if (!token) { setStatus('error'); return }
-    authApi.verifyEmail(token)
-      .then(() => setStatus('success'))
-      .catch(() => setStatus('error'))
+    authApi.verifyEmail(token).then(() => setStatus('success')).catch(() => setStatus('error'))
   }, [token])
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <div className="bg-white rounded-xl shadow-sm border p-8 w-full max-w-md text-center">
-        {status === 'loading' && <p className="text-gray-500">Verificando email...</p>}
+    <div className="min-h-screen flex items-center justify-center px-4" style={{
+      background: 'radial-gradient(ellipse 80% 60% at 50% -10%, rgba(99,67,219,0.35) 0%, transparent 70%), #07071a',
+    }}>
+      <div className="glass-strong rounded-2xl p-10 w-full max-w-sm text-center shadow-2xl shadow-black/40">
+        {status === 'loading' && (
+          <p className="text-white/50 text-sm">Verificando email...</p>
+        )}
 
         {status === 'success' && (
           <>
-            <div className="text-5xl mb-4">✅</div>
-            <h1 className="text-xl font-bold text-gray-900 mb-2">¡Email verificado!</h1>
-            <p className="text-sm text-gray-500 mb-4">Tu cuenta está activa. Ya podés iniciar sesión.</p>
-            <Link to="/login" className="text-indigo-600 hover:underline text-sm">
-              Ir al login
+            <div className="w-14 h-14 rounded-full bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center mx-auto mb-4 text-2xl">
+              ✓
+            </div>
+            <h1 className="text-lg font-bold text-white mb-2">¡Email verificado!</h1>
+            <p className="text-sm text-white/40 mb-5">Tu cuenta está activa.</p>
+            <Link to="/login" className="text-sm text-violet-400 hover:text-violet-300 transition-colors">
+              Ir al login →
             </Link>
           </>
         )}
 
         {status === 'error' && (
           <>
-            <div className="text-5xl mb-4">❌</div>
-            <h1 className="text-xl font-bold text-gray-900 mb-2">Enlace inválido</h1>
-            <p className="text-sm text-gray-500 mb-4">El enlace de verificación es inválido o ya expiró.</p>
-            <Link to="/login" className="text-indigo-600 hover:underline text-sm">
-              Volver al login
+            <div className="w-14 h-14 rounded-full bg-red-500/15 border border-red-500/30 flex items-center justify-center mx-auto mb-4 text-2xl">
+              ✕
+            </div>
+            <h1 className="text-lg font-bold text-white mb-2">Enlace inválido</h1>
+            <p className="text-sm text-white/40 mb-5">El enlace expiró o es inválido.</p>
+            <Link to="/login" className="text-sm text-violet-400 hover:text-violet-300 transition-colors">
+              Volver al login →
             </Link>
           </>
         )}

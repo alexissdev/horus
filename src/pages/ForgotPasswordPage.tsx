@@ -24,56 +24,53 @@ export function ForgotPasswordPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <div className="bg-white rounded-xl shadow-sm border p-8 w-full max-w-md">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">Recuperar contraseña</h1>
+    <div className="min-h-screen flex items-center justify-center px-4" style={{
+      background: 'radial-gradient(ellipse 80% 60% at 50% -10%, rgba(99,67,219,0.35) 0%, transparent 70%), #07071a',
+    }}>
+      <div className="w-full max-w-md">
+        <div className="glass-strong rounded-2xl p-8 shadow-2xl shadow-black/40">
+          <h1 className="text-xl font-bold text-white mb-1">Recuperar contraseña</h1>
 
-        {sent ? (
-          <div className="mt-4">
-            <p className="text-green-700 bg-green-50 border border-green-200 rounded-lg p-3 text-sm">
-              Si el email existe en nuestro sistema, te enviamos un enlace para restablecer tu contraseña.
-            </p>
-            <Link to="/login" className="mt-4 block text-center text-sm text-indigo-600 hover:underline">
-              Volver al login
-            </Link>
-          </div>
-        ) : (
-          <>
-            <p className="text-sm text-gray-500 mb-6">
-              Ingresá tu email y te enviaremos un enlace para restablecer tu contraseña.
-            </p>
+          {sent ? (
+            <div className="mt-4">
+              <p className="text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-3 text-sm">
+                Si el email existe en nuestro sistema, te enviamos un enlace de reseteo.
+              </p>
+              <Link to="/login" className="mt-4 block text-center text-xs text-violet-400 hover:text-violet-300 transition-colors">
+                Volver al login
+              </Link>
+            </div>
+          ) : (
+            <>
+              <p className="text-sm text-white/40 mb-6 mt-1">
+                Ingresá tu email y te enviamos el enlace.
+              </p>
 
-            {error && (
-              <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm">
-                {error}
-              </div>
-            )}
+              {error && (
+                <div className="mb-4 p-3 rounded-xl text-sm text-red-300 bg-red-500/10 border border-red-500/20">
+                  {error}
+                </div>
+              )}
 
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-              </div>
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full bg-indigo-600 text-white py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 disabled:opacity-50"
-              >
-                {loading ? 'Enviando...' : 'Enviar enlace'}
-              </button>
-            </form>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-medium text-white/50 mb-1.5 uppercase tracking-wider">Email</label>
+                  <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}
+                    required placeholder="tu@email.com" className="glass-input" />
+                </div>
+                <button type="submit" disabled={loading}
+                  className="w-full py-2.5 rounded-xl text-sm font-semibold text-white transition-all disabled:opacity-50"
+                  style={{ background: 'linear-gradient(135deg, #6c3bfa, #4f46e5)' }}>
+                  {loading ? 'Enviando...' : 'Enviar enlace'}
+                </button>
+              </form>
 
-            <Link to="/login" className="mt-4 block text-center text-sm text-indigo-600 hover:underline">
-              Volver al login
-            </Link>
-          </>
-        )}
+              <Link to="/login" className="mt-4 block text-center text-xs text-violet-400 hover:text-violet-300 transition-colors">
+                Volver al login
+              </Link>
+            </>
+          )}
+        </div>
       </div>
     </div>
   )

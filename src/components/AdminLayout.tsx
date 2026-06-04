@@ -9,16 +9,19 @@ const links = [
 
 export function AdminLayout() {
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="bg-indigo-700 text-white">
-        <div className="max-w-6xl mx-auto px-4 h-12 flex items-center gap-6">
-          <span className="font-bold text-sm">Panel Admin</span>
+    <div className="min-h-screen relative" style={{
+      background: 'radial-gradient(ellipse 80% 60% at 50% -10%, rgba(99,67,219,0.35) 0%, transparent 70%), radial-gradient(ellipse 60% 50% at 80% 80%, rgba(45,20,130,0.2) 0%, transparent 60%), #07071a',
+    }}>
+      <div className="glass sticky top-0 z-50" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+        <div className="max-w-6xl mx-auto px-5 h-12 flex items-center gap-6">
+          <span className="text-xs font-semibold uppercase tracking-widest text-white/30">Admin</span>
+          <div className="w-px h-4 bg-white/10" />
           {links.map((l) => (
             <NavLink
               key={l.to}
               to={l.to}
               className={({ isActive }) =>
-                `text-sm hover:text-indigo-200 ${isActive ? 'text-white font-medium' : 'text-indigo-200'}`
+                `text-sm transition-colors ${isActive ? 'text-violet-400 font-medium' : 'text-white/50 hover:text-white'}`
               }
             >
               {l.label}
@@ -26,7 +29,7 @@ export function AdminLayout() {
           ))}
         </div>
       </div>
-      <main>
+      <main className="relative z-10">
         <Outlet />
       </main>
     </div>
